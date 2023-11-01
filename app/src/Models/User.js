@@ -1,6 +1,5 @@
 "use strict";
 
-const { name } = require("ejs");
 const UserStorage = require("./UserStorage");
 
 class User {
@@ -16,15 +15,20 @@ class User {
       if (id === client.id && psword === client.psword) {
         return { success: true };
       }
+      console.log(`id: ${id} | psword: ${psword}`);
       return { success: false, message: "비밀번호가 틀렸습니다" };
     }
     return { success: false, message: "존재하지 않는 아이디 입니다" };
   }
 
-  register() {
+  async register() {
     const client = this.body;
-    const response = UserStorage.save(client);
-    return response;
+    try {
+      const response = await UserStorage.save(client);
+      return response;
+    } catch (err) {
+      return { success: false, message: err };
+    }
   }
 }
 

@@ -10,10 +10,10 @@ class User {
   async login() {
     const client = this.body;
     try {
-      const { id, psword } = await UserStorage.getUserInfo(client.id);
+      const user = await UserStorage.getUserInfo(client.id);
 
-      if (id) {
-        if (id === client.id && psword === client.psword) {
+      if (user) {
+        if (user.id === client.id && user.psword === client.psword) {
           return { success: true };
         }
         console.log(`id: ${id} | psword: ${psword}`);
@@ -21,7 +21,7 @@ class User {
       }
       return { success: false, message: "존재하지 않는 아이디 입니다" };
     } catch (err) {
-      return { success: false, err: err };
+      return { success: false, err };
     }
   }
 
